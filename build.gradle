@@ -1,0 +1,100 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2019 Andres Almiray.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+plugins {
+    id 'org.kordamp.gradle.kordamp-parentpom' version '1.10.0'
+    id 'org.kordamp.gradle.groovy-project'    version '0.31.0'
+    id 'org.kordamp.gradle.bintray'           version '0.31.0'
+    id 'org.kordamp.gradle.plugin'            version '0.31.0' apply false
+}
+
+config {
+    info {
+        name          = 'yguard-gradle-plugin'
+        description   = 'yGuard Gradle Plugin'
+        inceptionYear = '2019'
+        tags          = ['project', 'yguard', 'obfuscation']
+
+        links {
+            website      = 'https://github.com/kordamp/yguard-gradle-plugin'
+            issueTracker = 'https://github.com/kordamp/yguard-gradle-plugin/issues'
+            scm          = 'https://github.com/kordamp/yguard-gradle-plugin.git'
+        }
+
+        scm {
+            url                 = 'https://github.com/kordamp/yguard-gradle-plugin'
+            connection          = 'scm:git:https://github.com/kordamp/yguard-gradle-plugin.git'
+            developerConnection = 'scm:git:git@github.com:kordamp/yguard-gradle-plugin.git'
+        }
+
+        specification {
+            enabled = false
+        }
+
+        implementation {
+            enabled = false
+        }
+    }
+
+    docs {
+        javadoc {
+            enabled = false
+        }
+
+        groovydoc {
+            enabled        = true
+            replaceJavadoc = true
+            options {
+                link 'https://docs.gradle.org/5.0/javadoc/', 'org.gradle.'
+            }
+        }
+    }
+
+    bintray {
+        name = 'yguard-gradle-plugin'
+    }
+}
+
+allprojects {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+subprojects {
+    if (project.name.endsWith('-plugin')) {
+        apply plugin: 'java-library'
+        apply plugin: 'groovy'
+        apply plugin: 'org.kordamp.gradle.plugin'
+
+        config {
+            bintray { enabled = true }
+
+            plugin {
+                enabled             = true
+                id                  = project.pluginId
+                implementationClass = project.pluginImplementationClass
+            }
+        }
+
+        dependencies {
+            compileOnly gradleApi()
+        }
+
+        task publishRelease(dependsOn: [bintrayUpload, publishPlugins]) {}
+    }
+}

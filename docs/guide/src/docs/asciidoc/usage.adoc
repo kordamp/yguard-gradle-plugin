@@ -1,0 +1,300 @@
+
+[[_usage]]
+= Usage
+
+There are two choices for applying the plugin described in this document
+
+Option #1
+[source,groovy]
+[subs="attributes"]
+----
+buildscript {
+    repositories {
+        jcenter()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'org.kordamp.gradle:yguard-gradle-plugin:{project-version}'
+    }
+}
+apply plugin: 'org.kordamp.gradle.yguard'
+----
+
+Option #2
+[source,groovy]
+[subs="attributes"]
+----
+plugins {
+    id 'org.kordamp.gradle.yguard' version '{project-version}'
+}
+----
+
+== Requirements
+
+Java 8 and Gradle 5 are the minimum requirements to use this plugin.
+
+[[_org_kordamp_gradle_yguard_dsl]]
+== DSL
+
+This DSL follows closely the definitions of the link:https://www.yworks.com/resources/yguard/yguard_ant_howto.html[Ant DSL].
+
+Take special note that Java keywords use an underscore as suffix, i.e, `class_`, `package_`, `extends_`, and `implements_`.
+
+[source,groovy]
+[subs="+macros"]
+----
+yguard {
+    enabled
+    resources
+    classpath
+    externalClasses
+    inputJars
+    outputDirectory
+    verbose
+
+    attribute {
+        name
+        include()
+        exclude()
+    }
+
+    shrink {
+        enabled
+        logFile
+        createStubs
+        entryPointJar
+
+        props {
+            errorChecking
+            namingScheme
+            languageConformity
+            overloadEnabled
+            obfuscationPrefix
+            digests
+            exposeAttributes
+        }
+
+        keep {
+            sourcefile
+            localvariabletable
+            localVariableTypeTable
+            linenumbertable
+            runtimeVisibleAnnotations
+            runtimeVisibleTypeAnnotations
+            runtimeInvisibleAnnotations
+            runtimeInvisibleTypeAnnotations
+            runtimeVisibleParameterAnnotations
+            runtimeInvisibleParameterAnnotations
+            sourceDebugExtension
+
+            class_ {
+                name
+                classes
+                methods
+                fields
+                extends_
+                implements_
+                include()
+                exclude()
+            }
+
+            method {
+                name
+                class_
+                include()
+                exclude()
+            }
+
+            field {
+                name
+                class_
+                include()
+                exclude()
+            }
+        }
+    }
+
+    rename {
+        enabled
+        logFile
+
+        props {
+            errorChecking
+            namingScheme
+            languageConformity
+            overloadEnabled
+            obfuscationPrefix
+            digests
+            exposeAttributes
+        }
+
+        keep {
+            sourcefile
+            localvariabletable
+            localVariableTypeTable
+            linenumbertable
+            runtimeVisibleAnnotations
+            runtimeVisibleTypeAnnotations
+            runtimeInvisibleAnnotations
+            runtimeInvisibleTypeAnnotations
+            runtimeVisibleParameterAnnotations
+            runtimeInvisibleParameterAnnotations
+            sourceDebugExtension
+
+            class_ {
+                name
+                classes
+                methods
+                fields
+                extends_
+                implements_
+                include()
+                exclude()
+            }
+
+            method {
+                name
+                class_
+                include()
+                exclude()
+            }
+
+            field {
+                name
+                class_
+                include()
+                exclude()
+            }
+
+            package_ {
+                include()
+                exclude()
+            }
+
+            sourceFile {
+                mapping
+                include()
+                exclude()
+            }
+
+            lineNumberTable {
+                mappingScheme
+                scramblingSalt
+                include()
+                exclude()
+            }
+
+            adjust {
+                file
+                replaceName
+                replaceContent
+                replacePath
+                include()
+                exclude()
+            }
+        }
+    }
+}
+----
+
+[[_org_kordamp_gradle_yguard_tasks]]
+== Tasks
+
+[[_task_yguard_main]]
+=== yGuardMain
+
+Executes yGuard on the JAR file generated with classes & resources from the main SourceSet.
+
+[horizontal]
+Type:: `org.kordamp.gradle.plugin.yguard.tasks.YGuardGradleTask`
+Classpath:: `project.configurations.yguard`
+ExternalClasses:: `project.configurations.compileClasspath` + `project.configurations.runtimelasspath`
+InputJars:: `project.tasks.jar.archiveFile`
+OutputDirectory:: `${project.buildDir}/yguard/main`
+
+[[_org_kordamp_gradle_yguard_examples]]
+== Examples
+
+=== Getting Started
+
+Based on link:https://www.yworks.com/resources/yguard/yguard_ant_howto.html#ex:build[Example 1: Getting started with Ant and yGuard (for Ant newbies)]
+
+[source,groovy]
+[subs="+macros"]
+----
+yGuardMain {
+    shrink {
+        logFile = "${project.name}_shrinklog.xml"
+        keep {
+            class_ {
+                classes = 'protected'
+                methods = 'protected'
+                files   = 'protected'
+                include('com.mycompany.publicapi.**.*'
+                exclude('com.mycompany.publicapi.private.*')
+                include('com.mycompany.menu.reflection.**.*')
+            }
+        }
+    }
+
+    rename {
+        logFile   = "${project.name}_renamelog.xml"
+        mainClass = 'com.mycompany.myapp.Main'
+        props {
+            errorChecking = true
+        }
+        keep {
+            class_ {
+                classes = 'protected'
+                methods = 'protected'
+                files   = 'protected'
+                include('com.mycompany.publicapi.**.*'
+                exclude('com.mycompany.publicapi.private.*')
+            }
+        }
+    }
+}
+----
+
+=== Demo Program
+
+Based on link:https://www.yworks.com/resources/yguard/yguard_ant_howto.html#ex:demo[Example 3: A Demo Program]
+
+[source,groovy]
+[subs="+macros"]
+----
+yGuardMain {
+    shrink {
+        keep {
+            // main method
+            method {
+                name   = 'void main(java.lang.String[])'
+                class_ = 'com.mycompany.myapp.Main'
+            }
+            // needed for reflection
+            class_ {
+                name    = 'com.mycompany.myapp.data.DataObject'
+                methods = 'public'
+                fields  = 'none'
+            }
+            //  needed for reflection (name only)
+            class_ {
+                name    = 'com.mycompany.myapp.data.InnerDataObject'
+            }
+            // needed for serialization
+            method {
+                name   = 'void writeObject(java.io.ObjectOutputStream)'
+                include('com.mycompany.myapp.data.*')
+            }
+            method {
+                name   = 'void readObject(java.io.ObjectInputStream)'
+                include('com.mycompany.myapp.data.*')
+            }
+            field {
+                name   = 'serialVersionUID'
+                include('com.mycompany.myapp.data.*')
+            }
+        }
+    }
+----
+
