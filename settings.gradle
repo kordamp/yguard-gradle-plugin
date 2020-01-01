@@ -20,6 +20,14 @@ pluginManagement {
         jcenter()
         gradlePluginPortal()
     }
+    plugins {
+        id 'org.kordamp.gradle.kordamp-parentpom' version '1.10.1'
+        id 'org.kordamp.gradle.groovy-project'    version kordampVersion
+        id 'org.kordamp.gradle.bintray'           version kordampVersion
+        id 'org.kordamp.gradle.plugin'            version kordampVersion
+        id 'org.kordamp.gradle.guide'             version kordampVersion
+        id 'org.ajoberstar.git-publish'           version '0.3.2'
+    }
 }
 
 buildscript {
@@ -27,7 +35,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'org.kordamp.gradle:settings-gradle-plugin:0.31.0'
+        classpath 'org.kordamp.gradle:settings-gradle-plugin:0.31.1'
     }
 }
 apply plugin: 'org.kordamp.gradle.settings'

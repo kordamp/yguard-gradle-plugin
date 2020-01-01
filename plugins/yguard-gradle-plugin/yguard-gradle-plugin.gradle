@@ -15,8 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-repositories {
-    jcenter()
+plugins {
+    id 'java-library'
+    id 'groovy'
+    id 'org.kordamp.gradle.plugin'
+}
+
+config {
+    bintray {
+        enabled = true
+    }
+
+    plugin {
+        enabled             = true
+        id                  = project.pluginId
+        implementationClass = project.pluginImplementationClass
+    }
+}
+
+dependencies {
+    compileOnly gradleApi()
+    compileOnly 'com.gradle.publish:plugin-publish-plugin:0.10.1'
 }
 
 processResources {

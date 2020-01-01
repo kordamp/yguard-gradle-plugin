@@ -16,10 +16,9 @@
  * limitations under the License.
  */
 plugins {
-    id 'org.kordamp.gradle.kordamp-parentpom' version '1.10.0'
-    id 'org.kordamp.gradle.groovy-project'    version '0.31.0'
-    id 'org.kordamp.gradle.bintray'           version '0.31.0'
-    id 'org.kordamp.gradle.plugin'            version '0.31.0' apply false
+    id 'org.kordamp.gradle.kordamp-parentpom'
+    id 'org.kordamp.gradle.groovy-project'
+    id 'org.kordamp.gradle.bintray'
 }
 
 config {
@@ -65,36 +64,13 @@ config {
     }
 
     bintray {
-        name = 'yguard-gradle-plugin'
+        name          = 'yguard-gradle-plugin'
+        skipMavenSync = true
     }
 }
 
 allprojects {
     repositories {
         gradlePluginPortal()
-    }
-}
-
-subprojects {
-    if (project.name.endsWith('-plugin')) {
-        apply plugin: 'java-library'
-        apply plugin: 'groovy'
-        apply plugin: 'org.kordamp.gradle.plugin'
-
-        config {
-            bintray { enabled = true }
-
-            plugin {
-                enabled             = true
-                id                  = project.pluginId
-                implementationClass = project.pluginImplementationClass
-            }
-        }
-
-        dependencies {
-            compileOnly gradleApi()
-        }
-
-        task publishRelease(dependsOn: [bintrayUpload, publishPlugins]) {}
     }
 }
