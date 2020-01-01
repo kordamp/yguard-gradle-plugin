@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<meta name="author" content="Andres Almiray">
+<title>yGuard Gradle Plugin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.hidden {
+    display: none;
+}
+
+.switch {
+    border-width: 1px 1px 0 1px;
+    border-style: solid;
+    border-color: #7a2518;
+    display: inline-block;
+}
+
+.switch--item {
+    padding: 10px;
+    background-color: #ffffff;
+    color: #7a2518;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.switch--item.selected {
+    background-color: #7a2519;
+    color: #ffffff;
+}
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+    $('.primary').each(function() {
+        primary = $(this);
+        createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+        primary.children('.title').remove();
+    });
+    $('.secondary').each(function(idx, node) {
+        secondary = $(node);
+        primary = findPrimary(secondary);
+        switchItem = createSwitchItem(secondary, primary.children('.switch'));
+        switchItem.content.addClass('hidden');
+        findPrimary(secondary).append(switchItem.content);
+        secondary.remove();
+    });
+}
+
+function createBlockSwitch(primary) {
+    blockSwitch = $('<div class="switch"></div>');
+    primary.prepend(blockSwitch);
+    return blockSwitch;
+}
+
+function findPrimary(secondary) {
+    candidate = secondary.prev();
+    while (!candidate.is('.primary')) {
+        candidate = candidate.prev();
+    }
+    return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+    blockName = block.children('.title').text();
+    content = block.children('.content').first().append(block.next('.colist'));
+    item = $('<div class="switch--item">' + blockName + '</div>');
+    item.on('click', '', content, function(e) {
+        $(this).addClass('selected');
+        $(this).siblings().removeClass('selected');
+        e.data.siblings('.content').addClass('hidden');
+        e.data.removeClass('hidden');
+    });
+    blockSwitch.append(item);
+    return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>yGuard Gradle Plugin</h1>
+<div class="details">
+<span id="author" class="author">Andres Almiray</span><br>
+<span id="revnumber">version 0.1.0</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">1. Introduction</a></li>
+<li><a href="#_usage">2. Usage</a>
+<ul class="sectlevel2">
+<li><a href="#_requirements">2.1. Requirements</a></li>
+<li><a href="#_org_kordamp_gradle_yguard_dsl">2.2. DSL</a></li>
+<li><a href="#_org_kordamp_gradle_yguard_tasks">2.3. Tasks</a>
+<ul class="sectlevel3">
+<li><a href="#_task_yguard_main">2.3.1. yGuardMain</a></li>
+</ul>
+</li>
+<li><a href="#_org_kordamp_gradle_yguard_examples">2.4. Examples</a>
+<ul class="sectlevel3">
+<li><a href="#_getting_started">2.4.1. Getting Started</a></li>
+<li><a href="#_demo_program">2.4.2. Demo Program</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_links">3. Links</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A Gradle plugin for <a href="https://www.yworks.com/products/yguard">yGuard</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usage"><a class="anchor" href="#_usage"></a>2. Usage</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are two choices for applying the plugin described in this document</p>
+</div>
+<div class="paragraph">
+<p>Option #1</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-groovy" data-lang="groovy">buildscript {
+    repositories {
+        jcenter()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'org.kordamp.gradle:yguard-gradle-plugin:0.1.0'
+    }
+}
+apply plugin: 'org.kordamp.gradle.yguard'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Option #2</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-groovy" data-lang="groovy">plugins {
+    id 'org.kordamp.gradle.yguard' version '0.1.0'
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_requirements"><a class="anchor" href="#_requirements"></a>2.1. Requirements</h3>
+<div class="paragraph">
+<p>Java 8 and Gradle 5 are the minimum requirements to use this plugin.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_org_kordamp_gradle_yguard_dsl"><a class="anchor" href="#_org_kordamp_gradle_yguard_dsl"></a>2.2. DSL</h3>
+<div class="paragraph">
+<p>This DSL follows closely the definitions of the <a href="https://www.yworks.com/resources/yguard/yguard_ant_howto.html">Ant DSL</a>.</p>
+</div>
+<div class="paragraph">
+<p>Take special note that Java keywords use an underscore as suffix, i.e, <code>class_</code>, <code>package_</code>, <code>extends_</code>, and <code>implements_</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-groovy" data-lang="groovy">yguard {
+    enabled
+    resources
+    classpath
+    externalClasses
+    inputJars
+    outputDirectory
+    verbose
+
+    attribute {
+        name
+        include()
+        exclude()
+    }
+
+    shrink {
+        enabled
+        logFile
+        createStubs
+        entryPointJar
+
+        props {
+            errorChecking
+            namingScheme
+            languageConformity
+            overloadEnabled
+            obfuscationPrefix
+            digests
+            exposeAttributes
+        }
+
+        keep {
+            sourcefile
+            localvariabletable
+            localVariableTypeTable
+            linenumbertable
+            runtimeVisibleAnnotations
+            runtimeVisibleTypeAnnotations
+            runtimeInvisibleAnnotations
+            runtimeInvisibleTypeAnnotations
+            runtimeVisibleParameterAnnotations
+            runtimeInvisibleParameterAnnotations
+            sourceDebugExtension
+
+            class_ {
+                name
+                classes
+                methods
+                fields
+                extends_
+                implements_
+                include()
+                exclude()
+            }
+
+            method {
+                name
+                class_
+                include()
+                exclude()
+            }
+
+            field {
+                name
+                class_
+                include()
+                exclude()
+            }
+        }
+    }
+
+    rename {
+        enabled
+        logFile
+
+        props {
+            errorChecking
+            namingScheme
+            languageConformity
+            overloadEnabled
+            obfuscationPrefix
+            digests
+            exposeAttributes
+        }
+
+        keep {
+            sourcefile
+            localvariabletable
+            localVariableTypeTable
+            linenumbertable
+            runtimeVisibleAnnotations
+            runtimeVisibleTypeAnnotations
+            runtimeInvisibleAnnotations
+            runtimeInvisibleTypeAnnotations
+            runtimeVisibleParameterAnnotations
+            runtimeInvisibleParameterAnnotations
+            sourceDebugExtension
+
+            class_ {
+                name
+                classes
+                methods
+                fields
+                extends_
+                implements_
+                include()
+                exclude()
+            }
+
+            method {
+                name
+                class_
+                include()
+                exclude()
+            }
+
+            field {
+                name
+                class_
+                include()
+                exclude()
+            }
+
+            package_ {
+                include()
+                exclude()
+            }
+
+            sourceFile {
+                mapping
+                include()
+                exclude()
+            }
+
+            lineNumberTable {
+                mappingScheme
+                scramblingSalt
+                include()
+                exclude()
+            }
+
+            adjust {
+                file
+                replaceName
+                replaceContent
+                replacePath
+                include()
+                exclude()
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_org_kordamp_gradle_yguard_tasks"><a class="anchor" href="#_org_kordamp_gradle_yguard_tasks"></a>2.3. Tasks</h3>
+<div class="sect3">
+<h4 id="_task_yguard_main"><a class="anchor" href="#_task_yguard_main"></a>2.3.1. yGuardMain</h4>
+<div class="paragraph">
+<p>Executes yGuard on the JAR file generated with classes &amp; resources from the main SourceSet.</p>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+Type
+</td>
+<td class="hdlist2">
+<p><code>org.kordamp.gradle.plugin.yguard.tasks.YGuardGradleTask</code></p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+Classpath
+</td>
+<td class="hdlist2">
+<p><code>project.configurations.yguard</code></p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+ExternalClasses
+</td>
+<td class="hdlist2">
+<p><code>project.configurations.compileClasspath</code> + <code>project.configurations.runtimelasspath</code></p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+InputJars
+</td>
+<td class="hdlist2">
+<p><code>project.tasks.jar.archiveFile</code></p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+OutputDirectory
+</td>
+<td class="hdlist2">
+<p><code>${project.buildDir}/yguard/main</code></p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_org_kordamp_gradle_yguard_examples"><a class="anchor" href="#_org_kordamp_gradle_yguard_examples"></a>2.4. Examples</h3>
+<div class="sect3">
+<h4 id="_getting_started"><a class="anchor" href="#_getting_started"></a>2.4.1. Getting Started</h4>
+<div class="paragraph">
+<p>Based on <a href="https://www.yworks.com/resources/yguard/yguard_ant_howto.html#ex:build">Example 1: Getting started with Ant and yGuard (for Ant newbies)</a></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-groovy" data-lang="groovy">yGuardMain {
+    shrink {
+        logFile = "${project.name}_shrinklog.xml"
+        keep {
+            class_ {
+                classes = 'protected'
+                methods = 'protected'
+                files   = 'protected'
+                include('com.mycompany.publicapi.**.*'
+                exclude('com.mycompany.publicapi.private.*')
+                include('com.mycompany.menu.reflection.**.*')
+            }
+        }
+    }
+
+    rename {
+        logFile   = "${project.name}_renamelog.xml"
+        mainClass = 'com.mycompany.myapp.Main'
+        props {
+            errorChecking = true
+        }
+        keep {
+            class_ {
+                classes = 'protected'
+                methods = 'protected'
+                files   = 'protected'
+                include('com.mycompany.publicapi.**.*'
+                exclude('com.mycompany.publicapi.private.*')
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_demo_program"><a class="anchor" href="#_demo_program"></a>2.4.2. Demo Program</h4>
+<div class="paragraph">
+<p>Based on <a href="https://www.yworks.com/resources/yguard/yguard_ant_howto.html#ex:demo">Example 3: A Demo Program</a></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-groovy" data-lang="groovy">yGuardMain {
+    shrink {
+        keep {
+            // main method
+            method {
+                name   = 'void main(java.lang.String[])'
+                class_ = 'com.mycompany.myapp.Main'
+            }
+            // needed for reflection
+            class_ {
+                name    = 'com.mycompany.myapp.data.DataObject'
+                methods = 'public'
+                fields  = 'none'
+            }
+            //  needed for reflection (name only)
+            class_ {
+                name    = 'com.mycompany.myapp.data.InnerDataObject'
+            }
+            // needed for serialization
+            method {
+                name   = 'void writeObject(java.io.ObjectOutputStream)'
+                include('com.mycompany.myapp.data.*')
+            }
+            method {
+                name   = 'void readObject(java.io.ObjectInputStream)'
+                include('com.mycompany.myapp.data.*')
+            }
+            field {
+                name   = 'serialVersionUID'
+                include('com.mycompany.myapp.data.*')
+            }
+        }
+    }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_links"><a class="anchor" href="#_links"></a>3. Links</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="api/index.html" target="_blank" rel="noopener">Groovydoc</a></p>
+</div>
+<div class="paragraph">
+<p><a href="api-html/index.html" target="_blank" rel="noopener">Source</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1.0<br>
+Last updated 2019-12-23 18:31:15 +0100
+</div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+<script>prettyPrint()</script>
+</body>
+</html>
