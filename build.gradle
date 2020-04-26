@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 plugins {
-    id 'org.kordamp.gradle.kordamp-parentpom'
     id 'org.kordamp.gradle.groovy-project'
     id 'org.kordamp.gradle.bintray'
 }
@@ -27,18 +26,6 @@ config {
         description   = 'yGuard Gradle Plugin'
         inceptionYear = '2019'
         tags          = ['project', 'yguard', 'obfuscation']
-
-        links {
-            website      = 'https://github.com/kordamp/yguard-gradle-plugin'
-            issueTracker = 'https://github.com/kordamp/yguard-gradle-plugin/issues'
-            scm          = 'https://github.com/kordamp/yguard-gradle-plugin.git'
-        }
-
-        scm {
-            url                 = 'https://github.com/kordamp/yguard-gradle-plugin'
-            connection          = 'scm:git:https://github.com/kordamp/yguard-gradle-plugin.git'
-            developerConnection = 'scm:git:git@github.com:kordamp/yguard-gradle-plugin.git'
-        }
 
         specification {
             enabled = false
@@ -64,7 +51,6 @@ config {
     }
 
     bintray {
-        name          = 'yguard-gradle-plugin'
         skipMavenSync = true
     }
 }

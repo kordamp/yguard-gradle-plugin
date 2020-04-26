@@ -35,7 +35,6 @@ config {
 
 dependencies {
     compileOnly gradleApi()
-    compileOnly 'com.gradle.publish:plugin-publish-plugin:0.10.1'
 }
 
 processResources {
