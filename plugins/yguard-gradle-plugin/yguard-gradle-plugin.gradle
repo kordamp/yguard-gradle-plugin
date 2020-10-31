@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
 plugins {
     id 'java-library'
     id 'groovy'
@@ -26,15 +27,24 @@ config {
         enabled = true
     }
 
-    plugin {
-        enabled             = true
-        id                  = project.pluginId
-        implementationClass = project.pluginImplementationClass
+    plugins {
+        plugin {
+            name                = 'yguard'
+            id                  = project.pluginId
+            implementationClass = project.pluginImplementationClass
+        }
     }
+}
+
+repositories {
+    mavenLocal()
 }
 
 dependencies {
     compileOnly gradleApi()
+    compileOnly "com.yworks:yguard:$yguardVersion"
+
+    api "org.kordamp.gradle:base-gradle-plugin:$kordampPluginVersion"
 }
 
 processResources {

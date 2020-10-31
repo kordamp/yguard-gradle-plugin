@@ -18,6 +18,8 @@
 package org.kordamp.gradle.plugin.yguard
 
 import groovy.transform.CompileStatic
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
 
 /**
  *
@@ -26,7 +28,11 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 class YGuardExtension {
-    String toolVersion = '2.9.2'
+    final Property<String> toolVersion
+    final Property<Boolean> includeDefaultRepositories
 
-    boolean includeDefaultRepositories = true
+    YGuardExtension(ObjectFactory objects) {
+        toolVersion = objects.property(String).convention('2.10.0')
+        includeDefaultRepositories = objects.property(Boolean).convention(true)
+    }
 }

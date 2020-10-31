@@ -23,6 +23,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
@@ -30,6 +31,11 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.options.Option
+import org.kordamp.gradle.property.BooleanState
+import org.kordamp.gradle.property.SimpleBooleanState
+import org.kordamp.gradle.property.SimpleStringState
+import org.kordamp.gradle.property.StringState
 
 /**
  *
@@ -38,6 +44,9 @@ import org.gradle.api.tasks.TaskAction
  */
 @CompileStatic
 class YGuardGradleTask extends DefaultTask {
+    private final BooleanState verbose
+    private final StringState resources
+
     @Classpath
     final FileCollection classpath = project.objects.fileCollection()
 
@@ -50,17 +59,10 @@ class YGuardGradleTask extends DefaultTask {
     @InputFiles
     final FileCollection inputJars = project.objects.fileCollection()
 
-    @Input
-    final Property<Boolean> verbose = project.objects.property(Boolean).convention(false)
-
     @OutputDirectory
     final DirectoryProperty outputDirectory = project.objects.directoryProperty().convention(
         project.layout.buildDirectory.dir('yguard')
     )
-
-    @Input
-    @Optional
-    final Property<String> resources = project.objects.property(String).convention('copy')
 
     @Internal
     final Attribute attribute = project.objects.newInstance(Attribute, project)
@@ -69,18 +71,40 @@ class YGuardGradleTask extends DefaultTask {
     @Internal
     final Rename rename = project.objects.newInstance(Rename, project)
 
+    YGuardGradleTask() {
+        verbose = SimpleBooleanState.of(this, 'yguard.verbose', false)
+        resources = SimpleStringState.of(this, 'yguard.resources', 'copy')
+    }
+
+    @Option(option = 'yguard-verbose', description = 'Print out execution details')
+    void setVerbose(boolean value) { verbose.property.set(value) }
+
+    @Internal
+    Property<Boolean> getVerbose() { verbose.property }
+
+    @Input
+    Provider<Boolean> getResolvedVerbose() { verbose.provider }
+
+    @Option(option = 'yguard-resources', description = 'Resource handling strategy')
+    void setResources(String value) { resources.property.set(value) }
+
+    @Internal
+    Property<String> getResources() { resources.property }
+
+    @Input
+    @Optional
+    Provider<String> getResolvedResources() { resources.provider }
+
     @TaskAction
     void executeYguard() {
         List<String> errors = []
 
-        if(!shrink.enabled.get() && !rename.enabled.get()) {
+        if (!shrink.enabled.get() && !rename.enabled.get()) {
             throw new IllegalStateException("Task ${path} is misconfigured, shrink and rename cannot be disabled at the same time.")
         }
 
-        if (resources.present) {
-            if (!(resources.get() =~ /copy|auto|none/)) {
-                errors.add("\tInvalid value for resources ('${resources.get()}'). Must be one of none, copy, auto.".toString())
-            }
+        if (!(resolvedResources.get() =~ /copy|auto|none/)) {
+            errors.add("\tInvalid value for resources ('${resolvedResources.get()}'). Must be one of none, copy, auto.".toString())
         }
 
         List<String> e = attribute.validate()

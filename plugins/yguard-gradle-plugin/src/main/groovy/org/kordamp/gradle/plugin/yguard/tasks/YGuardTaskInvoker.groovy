@@ -26,7 +26,7 @@ import org.gradle.api.file.FileCollection
  */
 class YGuardTaskInvoker {
     static void invoke(YGuardGradleTask task) {
-        if (task.verbose.get()) {
+        if (task.resolvedVerbose.get()) {
             task.ant.setLifecycleLogLevel('INFO')
         }
 
@@ -43,7 +43,7 @@ class YGuardTaskInvoker {
                 inOutPair(
                     in: file,
                     out: task.outputDirectory.get().file(file.name[0..-5] + '_obf.jar').asFile,
-                    resources: task.resources.get()
+                    resources: task.resolvedResources.get()
                 )
             }
 

@@ -201,7 +201,7 @@ yguard {
 == Tasks
 
 [[_task_yguard_main]]
-=== yGuardMain
+=== yguardMain
 
 Executes yGuard on the JAR file generated with classes & resources from the main SourceSet.
 
@@ -222,7 +222,7 @@ Based on link:https://www.yworks.com/resources/yguard/yguard_ant_howto.html#ex:b
 [source,groovy]
 [subs="+macros"]
 ----
-yGuardMain {
+yguardMain {
     shrink {
         logFile = "${project.name}_shrinklog.xml"
         keep {
@@ -263,7 +263,7 @@ Based on link:https://www.yworks.com/resources/yguard/yguard_ant_howto.html#ex:d
 [source,groovy]
 [subs="+macros"]
 ----
-yGuardMain {
+yguardMain {
     shrink {
         keep {
             // main method

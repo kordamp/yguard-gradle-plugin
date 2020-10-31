@@ -36,7 +36,7 @@ import org.kordamp.gradle.plugin.yguard.tasks.YGuardGradleTask
  */
 @CompileStatic
 class YGuardPlugin implements Plugin<Project> {
-    static final String YGUARD = 'yGuard'
+    static final String YGUARD = 'yguard'
 
     @Override
     void apply(Project project) {
@@ -45,12 +45,12 @@ class YGuardPlugin implements Plugin<Project> {
         project.pluginManager.withPlugin('java-base', new Action<AppliedPlugin>() {
             @Override
             void execute(AppliedPlugin p) {
-                YGuardExtension extension = project.extensions.create(YGUARD, YGuardExtension)
+                YGuardExtension extension = project.extensions.create(YGUARD, YGuardExtension, project.objects)
                 Configuration configuration = project.configurations.maybeCreate(YGUARD)
 
                 addDependenciesAfterEvaluate(project, extension)
 
-                String taskName = 'yGuardMain'
+                String taskName = 'yguardMain'
                 TaskProvider<Jar> jar = project.tasks.named('jar', Jar)
 
                 project.tasks.register(taskName, YGuardGradleTask, new Action<YGuardGradleTask>() {
