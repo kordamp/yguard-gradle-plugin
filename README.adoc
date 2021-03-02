@@ -5,7 +5,7 @@
 :project-name:    kordamp-parentpom
 :project-name:    yguard-gradle-plugin
 :project-group:   org.kordamp.gradle
-:project-version: 0.4.0
+:project-version: 0.5.0
 
 image:https://github.com/{project-owner}/{project-name}/workflows/Build/badge.svg["Build Status", link="https://github.com/{project-owner}/{project-name}/actions"]
 image:http://img.shields.io/badge/license-ASL2-blue.svg["ASL2 Licensed", link="http://opensource.org/licenses/ASL2"]
@@ -24,8 +24,8 @@ Option #1
 ----
 buildscript {
     repositories {
-        jcenter()
         gradlePluginPortal()
+        mavenCentral()
     }
     dependencies {
         classpath '{project-group}:{project-name}:{project-version}'
@@ -49,4 +49,4 @@ and usage.
 == Requirements
 
  * Java 8
- * Gradle 5+
+ * Gradle 6+

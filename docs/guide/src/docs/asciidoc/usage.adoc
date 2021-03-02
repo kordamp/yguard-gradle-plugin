@@ -10,8 +10,8 @@ Option #1
 ----
 buildscript {
     repositories {
-        jcenter()
         gradlePluginPortal()
+        mavenCentral()
     }
     dependencies {
         classpath 'org.kordamp.gradle:yguard-gradle-plugin:{project-version}'
@@ -31,7 +31,7 @@ plugins {
 
 == Requirements
 
-Java 8 and Gradle 5 are the minimum requirements to use this plugin.
+Java 8 and Gradle 6 are the minimum requirements to use this plugin.
 
 [[_org_kordamp_gradle_yguard_dsl]]
 == DSL
