@@ -92,7 +92,7 @@ $(addBlockSwitches);
 <h1>yGuard Gradle Plugin</h1>
 <div class="details">
 <span id="author" class="author">Andres Almiray</span><br>
-<span id="revnumber">version 0.4.0</span>
+<span id="revnumber">version 0.5.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -141,11 +141,11 @@ $(addBlockSwitches);
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">buildscript {
     repositories {
-        jcenter()
         gradlePluginPortal()
+        mavenCentral()
     }
     dependencies {
-        classpath 'org.kordamp.gradle:yguard-gradle-plugin:0.4.0'
+        classpath 'org.kordamp.gradle:yguard-gradle-plugin:0.5.0'
     }
 }
 apply plugin: 'org.kordamp.gradle.yguard'</code></pre>
@@ -157,14 +157,14 @@ apply plugin: 'org.kordamp.gradle.yguard'</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">plugins {
-    id 'org.kordamp.gradle.yguard' version '0.4.0'
+    id 'org.kordamp.gradle.yguard' version '0.5.0'
 }</code></pre>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_requirements"><a class="anchor" href="#_requirements"></a>2.1. Requirements</h3>
 <div class="paragraph">
-<p>Java 8 and Gradle 5 are the minimum requirements to use this plugin.</p>
+<p>Java 8 and Gradle 6 are the minimum requirements to use this plugin.</p>
 </div>
 </div>
 <div class="sect2">
@@ -489,8 +489,8 @@ OutputDirectory
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 0.4.0<br>
-Last updated 2020-04-26 11:28:57 +0200
+Version 0.5.0<br>
+Last updated 2020-10-31 15:51:17 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
