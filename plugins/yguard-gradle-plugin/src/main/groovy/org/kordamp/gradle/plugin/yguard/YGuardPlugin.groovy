@@ -79,7 +79,6 @@ class YGuardPlugin implements Plugin<Project> {
         })
     }
 
-    @CompileDynamic
     private void addDependenciesAfterEvaluate(Project project,
                                               YGuardExtension extension) {
         project.afterEvaluate {
@@ -87,9 +86,7 @@ class YGuardPlugin implements Plugin<Project> {
                 project.repositories.jcenter()
             }
 
-            project.dependencies {
-                yGuard("com.yworks:yguard:${extension.toolVersion}")
-            }
+            project.dependencies.add('yguard', "com.yworks:yguard:${extension.toolVersion}")
         }
     }
 }
