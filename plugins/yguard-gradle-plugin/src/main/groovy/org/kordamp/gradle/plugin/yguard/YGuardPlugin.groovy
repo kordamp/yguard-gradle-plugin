@@ -86,7 +86,7 @@ class YGuardPlugin implements Plugin<Project> {
                 project.repositories.mavenCentral()
             }
 
-            project.dependencies.add('yguard', "com.yworks:yguard:${extension.toolVersion}")
+            project.dependencies.add('yguard', "com.yworks:yguard:${extension.toolVersion.get()}")
         }
     }
 }

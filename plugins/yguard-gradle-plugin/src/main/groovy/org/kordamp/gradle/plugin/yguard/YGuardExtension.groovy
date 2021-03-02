@@ -32,7 +32,7 @@ class YGuardExtension {
     final Property<Boolean> includeDefaultRepositories
 
     YGuardExtension(ObjectFactory objects) {
-        toolVersion = objects.property(String).convention('2.10.0')
+        toolVersion = objects.property(String).convention('3.0.0')
         includeDefaultRepositories = objects.property(Boolean).convention(true)
     }
 }
