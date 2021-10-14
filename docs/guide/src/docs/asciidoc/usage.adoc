@@ -229,7 +229,7 @@ yguardMain {
             class_ {
                 classes = 'protected'
                 methods = 'protected'
-                files   = 'protected'
+                fields  = 'protected'
                 include('com.mycompany.publicapi.**.*'
                 exclude('com.mycompany.publicapi.private.*')
                 include('com.mycompany.menu.reflection.**.*')
@@ -247,7 +247,7 @@ yguardMain {
             class_ {
                 classes = 'protected'
                 methods = 'protected'
-                files   = 'protected'
+                fields  = 'protected'
                 include('com.mycompany.publicapi.**.*'
                 exclude('com.mycompany.publicapi.private.*')
             }

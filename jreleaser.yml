@@ -33,6 +33,8 @@ release:
           title: '[chore]'
         - label: 'dependencies'
           title: '[deps]'
+        - label: 'docs'
+          title: '[docs]'
       categories:
         - title: '🚀 Features'
           labels:
@@ -43,12 +45,16 @@ release:
         - title: '🧰 Tasks'
           labels:
             - 'task'
+        - title: '📝 Documentation'
+          labels:
+            - 'docs'
         - title: '⚙️  Dependencies'
           labels:
             - 'dependencies'
       replacers:
         - search: '\[chore\] '
         - search: '\[deps\] '
+        - search: '\[docs\] '
 
 announce:
   twitter:
