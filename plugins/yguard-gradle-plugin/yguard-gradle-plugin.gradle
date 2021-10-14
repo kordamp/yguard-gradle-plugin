@@ -22,10 +22,6 @@ plugins {
 }
 
 config {
-    bintray {
-        enabled = true
-    }
-
     plugins {
         plugin {
             name                = 'yguard'
@@ -33,10 +29,6 @@ config {
             implementationClass = project.pluginImplementationClass
         }
     }
-}
-
-repositories {
-    mavenLocal()
 }
 
 dependencies {

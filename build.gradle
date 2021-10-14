@@ -17,7 +17,6 @@
  */
 plugins {
     id 'org.kordamp.gradle.groovy-project'
-    id 'org.kordamp.gradle.bintray'
 }
 
 config {
@@ -49,14 +48,11 @@ config {
             }
         }
     }
-
-    bintray {
-        skipMavenSync = true
-    }
 }
 
 allprojects {
     repositories {
+        mavenLocal()
         gradlePluginPortal()
     }
 }

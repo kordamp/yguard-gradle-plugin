@@ -1,0 +1,56 @@
+project:
+  name: yguard-gradle-plugin
+  description: A Gradle plugin for yGuard
+  longDescription: |
+    A Gradle plugin for link:https://www.yworks.com/products/yguard[yGuard]
+  website: https://github.com/kordamp/yguard-gradle-plugin/
+  authors:
+    - Andres Almiray
+  license: Apache-2.0
+
+release:
+  github:
+    branch: master
+    username: aalmiray
+    overwrite: true
+    milestone:
+      name: '{{projectVersion}}'
+    changelog:
+      sort: DESC
+      formatted: ALWAYS
+      format: '- {{commitShortHash}} {{commitTitle}}'
+      labelers:
+        - label: 'feature'
+          title: 'Resolves #'
+          body: 'Resolves #'
+        - label: 'issue'
+          title: 'Fixes #'
+          body: 'Fixes #'
+        - label: 'issue'
+          title: 'Relates to #'
+          body: 'Relates to #'
+        - label: 'task'
+          title: '[chore]'
+        - label: 'dependencies'
+          title: '[deps]'
+      categories:
+        - title: '🚀 Features'
+          labels:
+            - 'feature'
+        - title: '✅ Issues'
+          labels:
+            - 'issue'
+        - title: '🧰 Tasks'
+          labels:
+            - 'task'
+        - title: '⚙️  Dependencies'
+          labels:
+            - 'dependencies'
+      replacers:
+        - search: '\[chore\] '
+        - search: '\[deps\] '
+
+announce:
+  twitter:
+    active: release
+    status: 🚀 {{projectName}} {{projectVersion}} has been released! {{releaseNotesUrl}}
