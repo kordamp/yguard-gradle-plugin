@@ -5,4 +5,4 @@ on:
 
 jobs:
   build:
-    uses: kordamp/kordamp-gradle-plugin-workflow/.github/workflows/build.yml@d5e4a8c
+    uses: kordamp/kordamp-gradle-plugin-workflow/.github/workflows/build.yml@main
