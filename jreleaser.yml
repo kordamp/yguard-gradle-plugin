@@ -35,6 +35,8 @@ release:
           title: '[deps]'
         - label: 'docs'
           title: '[docs]'
+        - label: 'build'
+          title: '[build]'
       categories:
         - title: '🚀 Features'
           labels:
@@ -51,6 +53,14 @@ release:
         - title: '⚙️  Dependencies'
           labels:
             - 'dependencies'
+        - title: 'Build'
+          labels:
+            - 'build'
+      hide:
+        categories:
+          - 'Build'
+        contributors:
+          - 'GitHub'
       replacers:
         - search: '\[chore\] '
         - search: '\[deps\] '
