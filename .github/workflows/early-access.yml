@@ -11,6 +11,7 @@ jobs:
     uses: kordamp/kordamp-gradle-plugin-workflow/.github/workflows/early-access.yml@main
     with:
       branch: master
+    secrets:
       github-token: ${{ secrets.GIT_ACCESS_TOKEN }}
       gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
       gpg-public-key: ${{ secrets.GPG_PUBLIC_KEY }}
